@@ -1,32 +1,11 @@
 <a name="readme-top"></a>
 
-<br/>
-<br/>
-
 <div align="center">
-  <a href="https://github.com/zyx-0314/">
-    <img src="./assets/img/nyebe_white.png" alt="Nyebe" width="130" height="100">
-  </a>
-<!-- * Title Section -->
-  <h3 align="center">AD - CI4 Template</h3>
+  <h1>NeonBites</h1>
+  <p><em>A cyberpunk-themed restaurant landing site built on CodeIgniter 4.</em></p>
 </div>
-
-<!-- * Description Section -->
-<div align="center">
-This repository is a beginner-friendly CodeIgniter 4 template.  
-It helps teams quickly bootstrap backend + frontend projects, with simple sample modules that show how to extend the system.
-</div>
-
-<br/>
-
-![](https://visit-counter.vercel.app/counter.png?page=zyx-0314/ci4-template)
-
-<!-- ! Make sure it was similar to your github -->
 
 ---
-
-<br/>
-<br/>
 
 <details>
   <summary>Table of Contents</summary>
@@ -34,20 +13,16 @@ It helps teams quickly bootstrap backend + frontend projects, with simple sample
     <li>
       <a href="#overview">Overview</a>
       <ol>
-        <li>
-          <a href="#key-components">Key Components</a>
-        </li>
-        <li>
-          <a href="#technology">Technology</a>
-        </li>
+        <li><a href="#pages--routes">Pages &amp; Routes</a></li>
+        <li><a href="#data-model">Data Model</a></li>
+        <li><a href="#technology">Technology</a></li>
       </ol>
     </li>
-    <li>
-      <a href="#rules-practices-and-principles">Rules, Practices and Principles</a>
-    </li>
-    <li>
-      <a href="#resources">Resources</a>
-    </li>
+    <li><a href="#quick-start-docker">Quick Start (Docker)</a></li>
+    <li><a href="#ports--database">Ports &amp; Database</a></li>
+    <li><a href="#project-structure">Project Structure</a></li>
+    <li><a href="#rules-practices-and-principles">Rules, Practices and Principles</a></li>
+    <li><a href="#docs">Docs</a></li>
   </ol>
 </details>
 
@@ -55,24 +30,30 @@ It helps teams quickly bootstrap backend + frontend projects, with simple sample
 
 ## Overview
 
-This template provides a **minimal CodeIgniter 4 project layout** with conventions for file organization, commit practices, and simple modules.
+NeonBites is a **CodeIgniter 4** landing/marketing site for a fictional neon/cyberpunk-styled restaurant. It ships as a Dockerized stack (PHP-FPM + Nginx + MySQL) with a static-content menu page, and a `products` table already migrated for future menu-management features.
 
-It is designed to be **easy to start with** and a **reference for adding new features**.
+* **Purpose**: showcase pages (home, features, menu, contact, get started) styled with a neon/cyberpunk theme.
+* **Status**: front-end pages are wired up and render directly (no CI4 `view()`/layout system yet — controllers `include` view files manually); a `products` migration exists but there is no Model, controller CRUD, or auth layer yet.
 
-* **Purpose**: a clean starting point for CI4 apps.
-* **Audience**: developers who want a predictable structure and quick onboarding.
+### Pages & Routes
 
-### Key Components
+| Route          | Controller Method    | View                              |
+| -------------- | --------------------- | ---------------------------------- |
+| `/`            | `Home::index`          | `Views/landing/neonbites.php`      |
+| `/features`    | `Home::features`       | `Views/landing/features.php`       |
+| `/menu`        | `Home::menu`           | `Views/landing/menu.php` (hardcoded sample dishes) |
+| `/contact`     | `Home::contact`        | `Views/landing/contact.php`        |
+| `/get-started` | `Home::getStarted`     | `Views/landing/get_started.php`    |
 
-These are **sample modules** included (or suggested) for learning how to add features:
+Shared partials live in `Views/components/` (`head.php`, `features.php`, `gallery.php`).
 
-| Component                 | Purpose                                                             | Notes                                                   |
-| ------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------- |
-| **Auth (Sample)**         | Basic login/logout and role check (admin/user).                     | Uses CI4 sessions + MySQL `users` table.                |
-| **CRUD Module**           | Example entity (`Posts` or `Tasks`) with create/read/update/delete. | Demonstrates Controller → Service → Repository pattern. |
-| **Scheduler (Sample)**    | Simple to-do list with due dates.                                   | Shows how to extend with new tables and services.       |
+### Data Model
 
- <!-- ! Start simple. Use these modules as **learning samples**; extend or replace them based on your project’s needs. -->
+| Table      | Purpose                          | Columns                                                              |
+| ---------- | --------------------------------- | ---------------------------------------------------------------------- |
+| `products` | Menu items (NeonBites dishes)     | `id`, `product_name`, `desc`, `price`, `img`, `+` timestamps/soft deletes |
+
+Migration: `backend/app/Database/Migrations/2025-10-05-155510_CreateNeonTable.php`. No `Model` class exists for it yet (`app/Models/` is currently empty).
 
 ### Technology
 
@@ -80,34 +61,38 @@ These are **sample modules** included (or suggested) for learning how to add fea
 
 ![HTML](https://img.shields.io/badge/HTML-E34F26?style=for-the-badge\&logo=html5\&logoColor=white)
 ![CSS](https://img.shields.io/badge/CSS-1572B6?style=for-the-badge\&logo=css3\&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge\&logo=javascript\&logoColor=white)
 ![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge\&logo=php\&logoColor=white)
 
 #### Framework/Library
 
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge\&logo=tailwindcss\&logoColor=white)
 ![CodeIgniter](https://img.shields.io/badge/CodeIgniter-EF4223?style=for-the-badge\&logo=codeigniter\&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge\&logo=tailwindcss\&logoColor=white)
+![Font Awesome](https://img.shields.io/badge/Font_Awesome-528DD7?style=for-the-badge\&logo=fontawesome\&logoColor=white)
 
-#### Databases
+Tailwind (v4 browser build) and Font Awesome are loaded via CDN in `Views/components/head.php`, alongside Google Fonts (Orbitron + Share Tech Mono) for the neon look.
+
+#### Database
 
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge\&logo=mysql\&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge\&logo=postgresql\&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge\&logo=mongodb\&logoColor=white)
-![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge\&logo=firebase\&logoColor=black)
 
-<!-- ! Keep only the used technology -->
+#### Infrastructure
+
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge\&logo=docker\&logoColor=white)
+![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge\&logo=nginx\&logoColor=white)
 
 ---
 
 ## Quick Start (Docker)
 
-Run the development stack and the app (rebuild if needed):
+Run the development stack (rebuild if needed, sync files on change):
 
 ```cmd
 docker compose up --watch
 ```
 
-Common utility commands (run inside the project root):
+The site is served by Nginx at **http://localhost** (port 80).
+
+Common utility commands (run from the project root):
 
 - Run migrations:
 ```cmd
@@ -121,108 +106,112 @@ docker compose exec php composer seed
 ```cmd
 docker compose exec php composer test
 ```
+- Start phpMyAdmin (opt-in via profile):
+```cmd
+docker compose --profile tools up -d phpmyadmin
+```
 
 - Create a migration (using CodeIgniter's spark tool):
 ```cmd
-docker compose exec php php spark make:migration CreateUsersTabel
+docker compose exec php php spark make:migration CreateUsersTable
 ```
 
 - Create a model (using CodeIgniter's spark tool):
-
 ```cmd
-docker compose exec php php spark make:model UsemModel
+docker compose exec php php spark make:model UserModel
 ```
 
 - Create an entity (value object for a single record) (using CodeIgniter's spark tool):
 ```cmd
-docker compose exec php php spark make:entity Uzer
+docker compose exec php php spark make:entity User
 ```
 
-- Create a controller (add --resource to scaffold resourceful methods if you like) (using CodeIgniter's spark tool):
+- Create a controller (add `--resource` to scaffold resourceful methods) (using CodeIgniter's spark tool):
 ```cmd
-docker compose exec php php spark make:controller Usars
+docker compose exec php php spark make:controller Users
 ```
 
 - Create a seeder (for test/dev data) (using CodeIgniter's spark tool):
 ```cmd
-docker compose exec php php spark make:seeder UserzSeeder
+docker compose exec php php spark make:seeder UsersSeeder
 ```
-
-If you prefer, you can include `-f "compose.yaml"` explicitly; the shorter commands above work when running from the repo root.
 
 ## Ports & Database
 
-Defaults used in this project (host mapping):
+Defaults used in this project (from `compose.yaml`):
 
-| Service     | Host port |
-|-------------|-----------:|
-| nginx (app) | 8090      |
-| phpMyAdmin  | 8091      |
-| MySQL       | 3390      |
+| Service     | Host port | Notes                              |
+| ----------- | --------: | ----------------------------------- |
+| nginx (app) | 80        | serves the CI4 app                  |
+| MySQL       | 3380      | maps to container port 3306         |
+| phpMyAdmin  | 8091      | only started with `--profile tools` |
 
-Database credentials used in examples and CI:
+Database credentials (local/dev only, set in `backend/.env` and `compose.yaml`):
 
-- Host: localhost
-- Port: 3390
-- Database: app
-- User: root
-- Password: root
+- Host (from host machine): `localhost:3380` — inside Docker network: `mysql:3306`
+- Database: `app`
+- User: `app` / Password: `app`
+- Root password: `root`
 
 Be careful: seeding and truncating are destructive operations — run only on local/dev environments unless you know what you're doing.
 
-## Rules, Practices and Principles
-
-<!-- ! Dont Revise this -->
-
-1. Always prefix project titles with `AD-`.
-2. Place files in their **respective CI4 folders** (`Controllers/`, `Services/`, `Repositories/`, `Views/`).
-3. Naming conventions:
-
-   | Type             | Case        | Example                   |
-   | ---------------- | ----------- | ------------------------- |
-   | Classes          | PascalCase  | `UserService.php`         |
-   | Interfaces       | PascalCase  | `UserRepositoryInterface` |
-   | DB tables/fields | snake\_case | `users`, `created_at`     |
-   | Docs             | kebab-case  | `dev-manual.md`           |
-
-4. Git commits use: `feat`, `fix`, `docs`, `refactor`.
-5. Use **Controller → Service → Repository** pattern.
-6. Assets (CSS/JS/img) live under `public/`.
-7. Docker configs are at the repo root (`docker-compose.yml`, `nginx.conf`).
-8. Docs are maintained in `/docs` (dev, technical, sop, commit, principles, copilot).
-
-Example structure:
+## Project Structure
 
 ```
-AD-ProjectName/
-├─ backend/ci4/
-│  ├─ app/Controllers/
-│  ├─ app/Services/
-│  ├─ app/Repositories/
+NeonBites/
+├─ backend/                 # CodeIgniter 4 app
+│  ├─ app/Controllers/      # Home.php (all landing routes)
+│  ├─ app/Database/
+│  │  ├─ Migrations/        # products table (NeonBites menu items)
+│  │  └─ Seeds/
+│  ├─ app/Models/           # empty — no Model wired up yet
 │  ├─ app/Views/
+│  │  ├─ components/        # head.php, features.php, gallery.php
+│  │  └─ landing/           # neonbites.php, features.php, menu.php, contact.php, get_started.php
 │  ├─ public/
 │  ├─ writable/
+│  ├─ Dockerfile            # php:8.3-fpm
+│  ├─ nginx.conf
 │  ├─ .env
 │  └─ composer.json
-├─ docker/               # Docker configs at root
-├─ docs/                 # Manuals and project docs
-├─ .gitignore
+├─ docs/                    # manuals, SOPs, checklists
+├─ .github/workflows/       # CI (docker-image.yml)
+├─ compose.yaml             # php + nginx + mysql + phpmyadmin
 └─ readme.md
 ```
 
-<!-- ! Dont Revise this -->
+---
+
+## Rules, Practices and Principles
+
+1. Place files in their **respective CI4 folders** (`Controllers/`, `Models/`, `Views/`).
+2. Naming conventions:
+
+   | Type             | Case        | Example                   |
+   | ---------------- | ----------- | ------------------------- |
+   | Classes          | PascalCase  | `ProductModel.php`        |
+   | Interfaces       | PascalCase  | `ProductRepositoryInterface` |
+   | DB tables/fields | snake\_case | `products`, `created_at`  |
+   | Docs             | kebab-case  | `dev-manual.md`           |
+
+3. Git commit types: `feat`, `fix`, `docs`, `refactor` — see [docs/commit-manual.md](docs/commit-manual.md) for scopes and branch naming (`frontend/`, `backend/`, `databases/`, `documents/`).
+4. Assets (CSS/JS/img) live under `backend/public/`.
+5. Docker configs live at the repo root (`compose.yaml`) and in `backend/` (`Dockerfile`, `nginx.conf`).
+6. Full engineering principles (SOLID, KISS, DRY, YAGNI, fail-fast) are documented in [docs/core-engineering-principles.md](docs/core-engineering-principles.md).
 
 ---
 
-## Resources
+## Docs
 
-| Title                   | Purpose                                                               | Link                                                                       |
-| ----------------------- | --------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| ChatGPT                 | General AI assistance for planning application architecture and docs. | [https://chat.openai.com](https://chat.openai.com)                         |
-| GitHub Copilot          | In-IDE code suggestions and boilerplate generation.                   | [https://github.com/features/copilot](https://github.com/features/copilot) |
-| YouTube “UI/UX Design”  | Video tutorials on modern web interface layouts and patterns.         | [https://www.youtube.com](https://www.youtube.com)                         |
-| Pinterest Design Boards | Inspiration for color schemes, typography, and component layouts.     | [https://www.pinterest.com](https://www.pinterest.com)                     |
-| Google Photos (Assets)  | Stock imagery and graphics used in UI mockups and documentation.      | [https://photos.google.com](https://photos.google.com)                     |
-| System Documentation    | Internal docs from PHP, MongoDB, and PostgreSQL used in development.  | — (see `/docs` folder in repo)                                             |
+Project manuals and reference material live in [`/docs`](docs/):
 
-<!-- ! Add what tools aided you -->
+| File                                                         | Purpose                                    |
+| -------------------------------------------------------------- | -------------------------------------------- |
+| [commit-manual.md](docs/commit-manual.md)                     | Commit types, branch naming, examples       |
+| [core-engineering-principles.md](docs/core-engineering-principles.md) | OOP/SOLID/KISS/DRY/YAGNI reference   |
+| [sop-manual.md](docs/sop-manual.md)                            | Standard operating procedures               |
+| [technical-manual.md](docs/technical-manual.md)                | Technical notes                             |
+| [v1-dev-manual.md](docs/v1-dev-manual.md)                      | v1 development notes                        |
+| [checklist/](docs/checklist/)                                  | Lecture notes and setup checklists          |
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
